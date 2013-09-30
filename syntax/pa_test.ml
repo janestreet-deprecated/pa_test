@@ -17,7 +17,7 @@ let sexp_list_expr_of_loc loc =
         | _ ->
           [ Sexplib.Sexp.List [
             Sexplib.Sexp.Atom "Stack";
-            Sexplib.Conv.sexp_of_list Core_kernel.Std.Source_code_position.to_sexp_hum here;
+            Sexplib.Conv.sexp_of_list Core_kernel.Std.Source_code_position.sexp_of_t_hum here;
           ] ] ] ] >>
 
 let () =

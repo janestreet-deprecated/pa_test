@@ -17,7 +17,7 @@ module Core_kernel = struct
     module Source_code_position = struct
       type t = Lexing.position
 
-        let to_sexp_hum t =
+        let sexp_of_t_hum t =
           <:sexp_of< [ `file of string ] * [ `line of int ] >>
             (`file t.Lexing.pos_fname, `line t.Lexing.pos_lnum)
     end
