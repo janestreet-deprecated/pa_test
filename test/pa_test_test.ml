@@ -25,10 +25,14 @@ module Core_kernel = struct
   end
 end
 
-
 TEST_UNIT = <:test_eq< int >> 1 1
 TEST =
   try <:test_eq< int * int >> ~here:[_here_] (5, 5) (5, 6); false
+  with _ -> true
+
+TEST_UNIT = <:test_result< int >> (1 + 2) ~expected:3
+TEST =
+  try <:test_result< int * int >> ~here:[_here_] (5, 5) ~expected:(5, 6); false
   with _ -> true
 
 TEST =

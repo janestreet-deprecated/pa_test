@@ -63,3 +63,29 @@ let () =
        end else ()
       >>
     )
+
+let () =
+  Syntax.Quotation.add "test_result"
+    Syntax.Quotation.DynAst.expr_tag
+    (fun loc loc_name_opt cnt_str ->
+      Pa_type_conv.set_conv_path_if_not_set loc;
+      let comparator = compare loc loc_name_opt cnt_str in
+      let sexpifier = sexp_of loc loc_name_opt cnt_str in
+      <:expr@loc< fun ?(here = []) ?equal got ~expected ->
+       let sexpifier = $sexpifier$ in
+       let pass =
+         match equal with
+         [ None ->
+           match $comparator$ got expected with
+           [ 0 -> True
+           | _ -> False ]
+         | Some f -> f got expected ] in
+       if not pass then begin
+         Core_kernel.Std.failwiths "got unexpected result"
+           (Sexplib.Sexp.List [
+             Sexplib.Sexp.List [Sexplib.Sexp.Atom "got"; sexpifier got];
+             Sexplib.Sexp.List [Sexplib.Sexp.Atom "expected"; sexpifier expected];
+             :: $sexp_list_expr_of_loc loc$ ]) (fun x -> x)
+       end else ()
+      >>
+    )
