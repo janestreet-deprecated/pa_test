@@ -26,9 +26,16 @@ let () =
     (fun loc loc_name_opt cnt_str ->
       Pa_type_conv.set_conv_path_if_not_set loc;
       let sexpifier = sexp_of loc loc_name_opt cnt_str in
-      <:expr@loc< fun ?(here = []) predicate t ->
+      <:expr@loc< fun ?(here = []) ?message predicate t ->
        if not (predicate t) then begin
-         Core_kernel.Std.failwiths "predicate failed"
+         let message =
+           match message with
+           [ None -> ""
+           | Some s -> s ^ ": "
+           ]
+           ^ "predicate failed"
+         in
+         Core_kernel.Std.failwiths message
            (Sexplib.Sexp.List [
              Sexplib.Sexp.List [
                Sexplib.Sexp.Atom "Value"; $sexpifier$ t;
@@ -37,6 +44,7 @@ let () =
       >>
     )
 
+
 let () =
   Syntax.Quotation.add "test_eq"
     Syntax.Quotation.DynAst.expr_tag
@@ -44,7 +52,7 @@ let () =
       Pa_type_conv.set_conv_path_if_not_set loc;
       let comparator = compare loc loc_name_opt cnt_str in
       let sexpifier = sexp_of loc loc_name_opt cnt_str in
-      <:expr@loc< fun ?(here = []) ?equal t1 t2 ->
+      <:expr@loc< fun ?(here = []) ?message ?equal t1 t2 ->
        let sexpifier = $sexpifier$ in
        let pass =
          match equal with
@@ -54,7 +62,14 @@ let () =
            | _ -> False ]
          | Some f -> f t1 t2 ] in
        if not pass then begin
-         Core_kernel.Std.failwiths "comparison failed"
+         let message =
+           match message with
+           [ None -> ""
+           | Some s -> s ^ ": "
+           ]
+           ^ "comparison failed"
+         in
+         Core_kernel.Std.failwiths message
            (Sexplib.Sexp.List [
              sexpifier t1;
              Sexplib.Sexp.Atom "vs";
@@ -71,7 +86,7 @@ let () =
       Pa_type_conv.set_conv_path_if_not_set loc;
       let comparator = compare loc loc_name_opt cnt_str in
       let sexpifier = sexp_of loc loc_name_opt cnt_str in
-      <:expr@loc< fun ?(here = []) ?equal got ~expected ->
+      <:expr@loc< fun ?(here = []) ?message ?equal got ~expected ->
        let sexpifier = $sexpifier$ in
        let pass =
          match equal with
@@ -81,7 +96,14 @@ let () =
            | _ -> False ]
          | Some f -> f got expected ] in
        if not pass then begin
-         Core_kernel.Std.failwiths "got unexpected result"
+         let message =
+           match message with
+           [ None -> ""
+           | Some s -> s ^ ": "
+           ]
+           ^ "got unexpected result"
+         in
+         Core_kernel.Std.failwiths message
            (Sexplib.Sexp.List [
              Sexplib.Sexp.List [Sexplib.Sexp.Atom "got"; sexpifier got];
              Sexplib.Sexp.List [Sexplib.Sexp.Atom "expected"; sexpifier expected];
