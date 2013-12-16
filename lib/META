@@ -1,6 +1,6 @@
 # OASIS_START
-# DO NOT EDIT (digest: 012cf0e18a9f11323e9b260eb5d3828a)
-version = "109.53.01"
+# DO NOT EDIT (digest: d66dcafef8339bdae13c298f4d37671f)
+version = "109.53.02"
 description = "Quotation expanders for assertions."
 archive(byte) = "pa_test.cma"
 archive(byte, plugin) = "pa_test.cma"
@@ -8,7 +8,7 @@ archive(native) = "pa_test.cmxa"
 archive(native, plugin) = "pa_test.cmxs"
 exists_if = "pa_test.cma"
 package "syntax" (
- version = "109.53.01"
+ version = "109.53.02"
  description = "Quotation expanders for assertions."
  requires = "camlp4 comparelib.syntax sexplib.syntax"
  archive(syntax, preprocessor) = "pa_test_syntax.cma"
