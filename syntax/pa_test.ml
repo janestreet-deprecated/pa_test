@@ -86,15 +86,15 @@ let () =
       Pa_type_conv.set_conv_path_if_not_set loc;
       let comparator = compare loc loc_name_opt cnt_str in
       let sexpifier = sexp_of loc loc_name_opt cnt_str in
-      <:expr@loc< fun ?(here = []) ?message ?equal got ~expected ->
+      <:expr@loc< fun ?(here = []) ?message ?equal got ~expect ->
        let sexpifier = $sexpifier$ in
        let pass =
          match equal with
          [ None ->
-           match $comparator$ got expected with
+           match $comparator$ got expect with
            [ 0 -> True
            | _ -> False ]
-         | Some f -> f got expected ] in
+         | Some f -> f got expect ] in
        if not pass then begin
          let message =
            match message with
@@ -106,7 +106,7 @@ let () =
          Core_kernel.Std.failwiths message
            (Sexplib.Sexp.List [
              Sexplib.Sexp.List [Sexplib.Sexp.Atom "got"; sexpifier got];
-             Sexplib.Sexp.List [Sexplib.Sexp.Atom "expected"; sexpifier expected];
+             Sexplib.Sexp.List [Sexplib.Sexp.Atom "expected"; sexpifier expect];
              :: $sexp_list_expr_of_loc loc$ ]) (fun x -> x)
        end else ()
       >>

@@ -59,9 +59,9 @@ TEST =
                  (Stack (((file X) (line X))))))";
     true
 
-TEST_UNIT = <:test_result< int >> (1 + 2) ~message:"size" ~expected:3
+TEST_UNIT = <:test_result< int >> (1 + 2) ~message:"size" ~expect:3
 TEST =
-  try <:test_result< int * int >> ~here:[_here_] (5, 5) ~expected:(5, 6); false
+  try <:test_result< int * int >> ~here:[_here_] (5, 5) ~expect:(5, 6); false
   with e ->
     test_exn e "(pa_test_test.ml.Core_kernel.Std.E \"got unexpected result\"
               ((got (5 5)) (expected (5 6))
