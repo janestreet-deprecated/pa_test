@@ -1,0 +1,23 @@
+# OASIS_START
+# DO NOT EDIT (digest: 0ebc52f039494ad37d27ba2c1b4a001e)
+version = "110.01.00"
+description = "Quotation expanders for assertions."
+archive(byte) = "pa_test.cma"
+archive(byte, plugin) = "pa_test.cma"
+archive(native) = "pa_test.cmxa"
+archive(native, plugin) = "pa_test.cmxs"
+exists_if = "pa_test.cma"
+package "syntax" (
+ version = "110.01.00"
+ description = "Quotation expanders for assertions."
+ requires = "camlp4 comparelib.syntax sexplib.syntax"
+ archive(syntax, preprocessor) = "pa_test_syntax.cma"
+ archive(syntax, toploop) = "pa_test_syntax.cma"
+ archive(syntax, byte) = "pa_test_syntax.cma"
+ archive(syntax, byte, plugin) = "pa_test_syntax.cma"
+ archive(syntax, native) = "pa_test_syntax.cmxa"
+ archive(syntax, native, plugin) = "pa_test_syntax.cmxs"
+ exists_if = "pa_test_syntax.cma"
+)
+# OASIS_STOP
+
