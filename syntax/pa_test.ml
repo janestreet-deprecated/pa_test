@@ -10,14 +10,21 @@ let sexp_of =
 let sexp_list_expr_of_loc loc =
   <:expr@loc<
     [ Sexplib.Sexp.List [
-        Sexplib.Sexp.Atom "Loc"; Sexplib.Sexp.Atom $str:Loc.to_string loc$;
+        Sexplib.Sexp.Atom "Loc";
+        Sexplib.Sexp.Atom (
+          Pa_test_lib.Runtime.make_location_string
+            ~pos_fname:$str:Loc.file_name loc$
+            ~pos_lnum:$`int:Loc.start_line loc$
+            ~pos_cnum:$`int:Loc.start_off loc$
+            ~pos_bol:$`int:Loc.start_bol loc$
+        );
       ] ::
       match here with
         [ [] -> []
         | _ ->
           [ Sexplib.Sexp.List [
             Sexplib.Sexp.Atom "Stack";
-            Sexplib.Conv.sexp_of_list Core_kernel.Std.Source_code_position.sexp_of_t_hum here;
+            Sexplib.Conv.sexp_of_list Pa_test_lib.Runtime.sexp_of_loc here;
           ] ] ] ] >>
 
 let () =
@@ -35,11 +42,11 @@ let () =
            ]
            ^ "predicate failed"
          in
-         Core_kernel.Std.failwiths message
+         Pa_test_lib.Runtime.failwith message
            (Sexplib.Sexp.List [
              Sexplib.Sexp.List [
                Sexplib.Sexp.Atom "Value"; $sexpifier$ t;
-             ] :: $sexp_list_expr_of_loc loc$ ]) (fun x -> x)
+             ] :: $sexp_list_expr_of_loc loc$ ])
        end else ()
       >>
     )
@@ -69,12 +76,12 @@ let () =
            ]
            ^ "comparison failed"
          in
-         Core_kernel.Std.failwiths message
+         Pa_test_lib.Runtime.failwith message
            (Sexplib.Sexp.List [
              sexpifier t1;
              Sexplib.Sexp.Atom "vs";
              sexpifier t2
-             :: $sexp_list_expr_of_loc loc$ ]) (fun x -> x)
+             :: $sexp_list_expr_of_loc loc$ ])
        end else ()
       >>
     )
@@ -103,11 +110,11 @@ let () =
            ]
            ^ "got unexpected result"
          in
-         Core_kernel.Std.failwiths message
+         Pa_test_lib.Runtime.failwith message
            (Sexplib.Sexp.List [
              Sexplib.Sexp.List [Sexplib.Sexp.Atom "got"; sexpifier got];
              Sexplib.Sexp.List [Sexplib.Sexp.Atom "expected"; sexpifier expect];
-             :: $sexp_list_expr_of_loc loc$ ]) (fun x -> x)
+             :: $sexp_list_expr_of_loc loc$ ])
        end else ()
       >>
     )
