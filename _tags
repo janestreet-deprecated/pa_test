@@ -1,8 +1,9 @@
 # OASIS_START
-# DO NOT EDIT (digest: c4031708c1f023d5fbee5e258658f33b)
+# DO NOT EDIT (digest: fbd3c64ae4604faf8a35fd1a412df028)
 # Ignore VCS directories, you can use the same kind of rule outside
 # OASIS_START/STOP if you want to exclude directories that contains
 # useless stuff for the build process
+true: annot, bin_annot
 <**/.svn>: -traverse
 <**/.svn>: not_hygienic
 ".bzr": -traverse
@@ -16,14 +17,14 @@
 # Library pa_test_lib
 "lib/pa_test_lib.cmxs": use_pa_test_lib
 "lib/runtime.cmx": for-pack(Pa_test_lib)
-<lib/*.ml{,i}>: package(sexplib)
-<lib/*.ml{,i}>: package(sexplib.syntax)
+<lib/*.ml{,i,y}>: package(sexplib)
+<lib/*.ml{,i,y}>: package(sexplib.syntax)
 # Library pa_test_syntax
 "syntax/pa_test_syntax.cmxs": use_pa_test_syntax
-<syntax/*.ml{,i}>: package(camlp4.lib)
-<syntax/*.ml{,i}>: package(camlp4.quotations)
-<syntax/*.ml{,i}>: package(type_conv)
-<syntax/*.ml{,i}>: package(sexplib)
+<syntax/*.ml{,i,y}>: package(camlp4.lib)
+<syntax/*.ml{,i,y}>: package(camlp4.quotations)
+<syntax/*.ml{,i,y}>: package(sexplib)
+<syntax/*.ml{,i,y}>: package(type_conv)
 # OASIS_STOP
 <lib/*.ml{,i}>: syntax_camlp4o
 <syntax/*.ml{,i}>: syntax_camlp4o
