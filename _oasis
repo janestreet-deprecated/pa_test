@@ -22,7 +22,7 @@ Library pa_test_lib
   Pack:               true
   BuildDepends:       sexplib, sexplib.syntax
   XMETAType:          library
-  XMETARequires:      camlp4, sexplib, sexplib.syntax
+  XMETARequires:      sexplib
 
 Library pa_test_syntax
   Path:               syntax
