@@ -42,7 +42,7 @@ TEST =
   try <:test_result< int * int >> ~here:[_here_] (5, 5) ~expect:(5, 6); false
   with e ->
     test_exn e "(runtime.ml.E \"got unexpected result\"
-                 ((got (5 5)) (expected (5 6))
+                 ((expected (5 6)) (got (5 5))
                   (Loc F:L:C)
                   (Stack (F:L:C))))";
     true

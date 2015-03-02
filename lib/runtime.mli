@@ -1,14 +1,46 @@
+open Sexplib
+
 (** Functions called by the generated code *)
-val sexp_of_loc : Lexing.position -> Sexplib.Sexp.t
-val failwith : string -> Sexplib.Sexp.t -> _
 
-val make_location_string
-  :  pos_fname:string
-  -> pos_lnum:int
-  -> pos_cnum:int
-  -> pos_bol:int
-  -> string
+val test_pred :
+  pos:Lexing.position ->
+  sexpifier:('a -> Sexp.t) ->
+  here:Lexing.position list ->
+  ?message:string ->
+  ('a -> bool) ->
+  'a ->
+  unit
 
-(** [string_of_loc] is used to implement [sexp_of_loc], and
-    is exposed at least so it can be rebound in core_kernel. *)
+val test_eq :
+  pos:Lexing.position ->
+  sexpifier:('a -> Sexp.t) ->
+  comparator:('a -> 'a -> int) ->
+  here:Lexing.position list ->
+  ?message:string ->
+  ?equal:('a -> 'a -> bool) ->
+  'a ->
+  'a ->
+  unit
+
+val test_result :
+  pos:Lexing.position ->
+  sexpifier:('a -> Sexp.t) ->
+  comparator:('a -> 'a -> int) ->
+  here:Lexing.position list ->
+  ?message:string ->
+  ?equal:('a -> 'a -> bool) ->
+  expect:'a ->
+  got:'a ->
+  unit
+
+(** Called to set/unset the [diff] function, used by [test_result] *)
+val set_diff_function : (from_:string -> to_:string -> unit) option -> unit
+
+(** [string_of_loc] and [sexp_of_loc] are exposed to be rebound in core_kernel. *)
 val string_of_loc : Lexing.position -> string
+val sexp_of_loc : Lexing.position -> Sexp.t
+
+
+
+
+
