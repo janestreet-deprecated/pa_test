@@ -16,7 +16,7 @@ XStdFilesREADME:  false
 BuildTools:       ocamlbuild, camlp4o
 
 Library pa_test_lib
-  Path:               lib
+  Path:               runtime-lib
   Modules:            Runtime
   FindlibName:        pa_test
   Pack:               true
@@ -25,7 +25,7 @@ Library pa_test_lib
   XMETARequires:      sexplib
 
 Library pa_test_syntax
-  Path:               syntax
+  Path:               src
   Modules:            Pa_test
   FindlibName:        syntax
   FindlibParent:      pa_test_lib
